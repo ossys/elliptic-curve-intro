@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en" ng-app="presentation">
+<head>
+  <meta charset="utf-8">
+  <title>Elliptic Curve Intro</title>
+  <meta name="description" content="Presentation Template">
+  <meta name="author" content="Chad Cravens">
+
+  <link rel="stylesheet" target="_blank" href="css/index.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <div class="reveal">
+    <img class="logo" src="./img/logo.png">
+    <div class="slides">
+
+
+      <section class="intro">
+        <h1 class="title">An Introduction to Elliptic Curve Cryptography</h1>
+        <hr>
+        <div class="med">Chad Cravens</div>
+        <div class="med">Open Source Systems</div>
+      </section>
+
+
+      <section>
+        <h1 class="title">Section 1 - A (very) brief introduction to cryptography</h1>
+      </section>
+
+
+      <section class="pivotal">
+        <h2>About This Presentation</h2>
+        <ol>
+          <li class="fragment">I am not a designer</li>
+          <li class="fragment">I am not a mathematician</li>
+          <li class="fragment">I am not a NSA cryptographer</li>
+          <li class="fragment">Focus on practical use cases for software developers</li>
+        </ol>
+        <div class="fragment">Oh yah, and this is not a presentation, but instead a discussion.</div>
+      </section>
+
+
+      <section class="pivotal">
+        <h2>3 Pivotal Moments in Human History</h2>
+        <ol>
+          <li class="fragment">Man Discovered Fire</li>
+          <li class="fragment">Man Invented the Wheel</li>
+          <li class="fragment">Man Invented Asymmetric Crypto Systems</li>
+        </ol>
+        <div class="fragment">ECC Is an Asymmetric Crypto System</div>
+      </section>
+
+
+      <section class="crypto">
+        <h2>What is Cryptography?</h2>
+        <div class="fragment">Cryptography is the practice and study of techniques for secure communication in the presence of third parties called adversaries.</div>
+        <div class="fragment">The process of hiding information is called "enciphering" or "encrypting".</div>
+        <div class="fragment">The process of revealing information is called "deciphering" or "decrypting".</div>
+      </section>
+
+
+      <section class="enciphering">
+        <h2>How is Encryption Done?</h2>
+        <img src="img/crypto-process.png">
+        <div class="small">
+          <a target="_blank" target="_blank" href="https://www.skyhighnetworks.com/cloud-security-university/tokenization-vs-encryption/">https://www.skyhighnetworks.com/cloud-security-university/tokenization-vs-encryption/</a>
+        </div>
+      </section>
+
+
+      <section class="vs">
+        <h2>3 Primary Types of Crypto Systems</h2>
+        <ol>
+          <li class="fragment">Hash Functions
+            <div>One-Way Functions</div>
+          </li>
+          <li class="fragment">Symmetric (Same Key, Block / Stream Ciphers)
+            <div>AES, 3DES, Blowfish</div>
+          </li>
+          <li class="fragment">Asymmetric
+            <div>RSA, ECC</div>
+          </li>
+        </ol>
+      </section>
+
+
+      <section class="symmetric">
+        <h2>Symmetric</h2>
+        <div>Uses the same key for enciphering as deciphering</div>
+        <img src="img/crypto-process.png">
+      </section>
+
+
+      <section class="problem">
+        <h2>What's the Problem?</h2>
+        <div class="fragment">Key Sharing</div>
+        <img src="img/key-exchange.png">
+      </section>
+
+
+      <section class="asymmetric">
+        <h2>What's the Solution? - Asymmetric</h2>
+        <div>Uses two different keys for enciphering and deciphering</div>
+        <ol>
+          <li class="fragment">Public Key</li>
+          <li class="fragment">Private Key</li>
+        </ol>
+        <div class="fragment">But why would we need this?</div>
+      </section>
+
+
+      <section class="vs">
+        <h2>Digital Signing</h2>
+        <div class="fragment">Assuming private key is private (core assumption)</div>
+        <img src="./img/digital-signature.png">
+      </section>
+
+
+      <section class="vs">
+        <h2>Key Sharing (Diffie Hellman)</h2>
+        <div class="fragment">Generating Shared Secret Key</div>
+        <row>
+          <div class="col-md-6">
+            <img src="./img/diffie-hellman.png">
+          </div>
+          <div class="col-md-6">
+            <img src="./img/key-share.png">
+          </div>
+        </row>
+      </section>
+
+
+      <section class="vs">
+        <h2>Challenge</h2>
+        <div>Use Crypto to Prove Your Identity</div>
+      </section>
+
+
+
+      <section>
+        <h1 class="title">Section 2 - Elliptic Curve Cryptography</h1>
+      </section>
+
+
+      <section class="curve">
+        <div>What is an Elliptic Curve?</div>
+        <div>$y^2 = x^3 + ax + b$</div>
+        <div>$a$ = -1, $b$ = 1
+        <div id="elliptic"></div>
+      </section>
+
+
+      <section class="enciphering">
+        <h2>More Concise</h2>
+        <div>$$\left\{ (x, y) \in \mathbb{R}^2\ |\ y^2 = x^3 + ax + b,\ 4 a^3 + 27 b^2 \ne 0 \right\}\ \cup\ \left\{ 0 \right\}$$</div>
+        <div class="small">This condition guarantees that the curve will not contain any singularities</div>
+        <img src="img/curves.png">
+        <div class="small">
+          <a target="_blank" href="http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/">https://www.skyhighnetworks.com/cloud-security-university/tokenization-vs-encryption/</a>
+        </div>
+      </section>
+
+
+      <section class="enciphering">
+        <h2>How is this used for Crypto?</h2>
+        <div class="fragment">Define Group (Addition) $P + Q$</div>
+        <ol>
+          <li class="fragment">Closure: $a$, $b$, $a + b$ is a member of $\mathbb{G}$</li>
+          <li class="fragment">Associativity: $(a + b) + c = a + (b + c)$</li>
+          <li class="fragment">Identity Element: $a + 0 = 0 + a = a$</li>
+          <li class="fragment">Inverse: for every $a$ there exists $b$ such that $a + b = 0$</li>
+          <li class="fragment">Commutativity: $a + b = b + a$</li>
+        </ol>
+        <div class="fragment">Abelian Group</div>
+      </section>
+
+
+      <section class="">
+        <div>Applied to Elliptic Curves</div>
+        <ol class="fragment">
+          <li>Identity Element: point at infinity 0</li>
+          <li>Inverse: of point P is symmetric about x-axis</li>
+        </ol>
+        <div class="fragment">Addition is Given Points $P$,$Q$,$R$ their sum is $P + Q + R = 0$</div>
+        <div class="fragment">Therefore: $P + Q = -R$</div>
+        <row class="fragment">
+          <div class="col-md-6">
+            <img src="./img/ec-points.png">
+          </div>
+          <div class="col-md-6">
+            <img src="./img/animation-point-doubling.gif">
+          </div>
+        </row>
+      </section>
+
+
+        <section class="">
+          <div>Fast Addition</div>
+          <div>Ignoring corner cases such as P/Q=0, P=-Q, P=Q, etc</div>
+          <div>Scalar Multiplication: $$nP = P + P + \cdots + P$$</div>
+          <p>$$\begin{array}{rcl}
+      151 &amp; = &amp; 1 \cdot 2^7 + 0 \cdot 2^6 + 0 \cdot 2^5 + 1 \cdot 2^4 + 0 \cdot 2^3 + 1 \cdot 2^2 + 1 \cdot 2^1 + 1 \cdot 2^0 \\
+      &amp; = &amp; 2^7 + 2^4 + 2^2 + 2^1 + 2^0
+  \end{array}$$</p>
+          <p>$$151 \cdot P = 2^7 P + 2^4 P + 2^2 P + 2^1 P + 2^0 P$$</p>
+        </section>
+
+
+      <section class="curve">
+        <div>Elliptic Curve Types</div>
+        <div>a, b, p</div>
+        <ul class="fragment">
+          <li>a = -3</li>
+          <li>b = 41058363725152142129326129780047268409114441015993725554835256314039467401291</li>
+          <li>modulo p = 2^256 - 2^224 + 2^192 + 2^96 - 1</li>
+        </ul>
+        <div class="fragment">NIST P-256</div>
+        <img class="fragment" src="./img/skeptical.png">
+      </section>
+
+
+      <section class="curve">
+        <div>More Curve Types</div>
+        <ul>
+          <li>secp256k1</li>
+          <li>Curve25519</li>
+          <li>Curve383187</li>
+          <li>Curve41417</li>
+        </ul>
+        <div>For More Info on Safe Curve Types</div>
+        <a target="_blank" href="https://safecurves.cr.yp.to/">https://safecurves.cr.yp.to/</a>
+      </section>
+
+
+      <section class="keygen" ng-controller="ECCController">
+        <row>
+          <div class="col-sm-12">
+            Generating Key Pairs
+          </div>
+        </row>
+        <row>
+          <div class="col-sm-6">
+            <pre>
+              <code class="language-javascript">
+                var ec = new EC('secp256k1');
+                var key = ec.genKeyPair();
+                $scope.private = key.getPrivate('hex');
+                var pub = key.getPublic().encode('hex');
+                $scope.public = pub.substring(2,pub.length);
+              </code>
+            </pre>
+          </div>
+          <div class="col-sm-6">
+            <button ng-click="genKeypair()">Generate KeyPair</button>
+            <div>Private Key: {{ private.length }}</div>
+            <div class="small">{{ private }}</div>
+            <div>Public Key: {{ public.length }}</div>
+            <div class="small">{{ public }}</div>
+          </div>
+        </row>
+        <row>
+          <div class="col-sm-12 key">
+            Elliptic - <a target="_blank" target="_blank" href="https://github.com/indutny/elliptic">https://github.com/indutny/elliptic</a>
+          </div>
+        </row>
+      </section>
+
+
+      <section class="curve">
+        <div>Elliptic Curve Protocols</div>
+        <ol>
+          <li class="fragment">Elliptic Curve Diffie Hellman (ECDH)</li>
+          <li class="fragment">Elliptic Curve Digital Signature Algorithm (ECDSA)</li>
+        </ol>
+      </section>
+
+
+      <section class="curve">
+        <div>Elliptic Curve Diffie Hellman (ECDH)</div>
+        <p style="font-size: .5em;">is an anonymous key agreement protocol that allows two parties, each having an elliptic-curve public–private key pair, to establish a shared secret over an insecure channel.</p>
+        <ol>
+          <li class="fragment">Agree on parameters (curve type)</li>
+          <li class="fragment">Generate Keypair</li>
+          <li class="fragment">Share Public Key over Public Channel</li>
+          <li class="fragment">Generate Shared Secret</li>
+        </ol>
+      </section>
+
+
+      <section class="keygen" ng-controller="ECDHController">
+        <row>
+          <div class="col-sm-12">
+            ECDH
+          </div>
+        </row>
+        <row>
+          <div class="col-sm-6">
+            <pre>
+              <code class="language-javascript">
+                var ec = new EC('secp256k1');
+                var alicekp = ec.genKeyPair();
+                var bobkp = ec.genKeyPair();
+                $scope.alice = alicekp.derive(bobkp.getPublic()).toString(16);
+                $scope.bob = bobkp.derive(alicekp.getPublic()).toString(16);
+              </code>
+            </pre>
+          </div>
+          <div class="col-md-6">
+            <button ng-click="genSharedSecret()">Generate Shared Key</button>
+            <div>Alice</div>
+            <div class="small">{{ alice }}</div>
+            <div>Bob</div>
+            <div class="small">{{ bob }}</div>
+          </div>
+        </row>
+      </section>
+
+
+      <section class="keygen" ng-controller="ECDSAController">
+        <row>
+          <div class="col-sm-12">
+            ECDSA
+          </div>
+        </row>
+        <row>
+          <div class="col-sm-6">
+            <pre>
+              <code class="language-javascript">
+                var ec = new EC('secp256k1');
+                var kp = ec.genKeyPair();
+                $scope.msg = "Message Being Sign";
+                var signature = kp.sign($scope.msg);
+                $scope.derSign = signature.toDER();
+                var pubPoint = kp.getPublic();
+                var x = pubPoint.getX();
+                var y = pubPoint.getY();
+                var pub = pubPoint.encode('hex');
+                var key = ec.keyFromPublic(pub, 'hex');
+                $scope.valid = key.verify($scope.msg, signature);
+              </code>
+            </pre>
+          </div>
+          <div class="col-md-6">
+            <button ng-click="verifySignature()">Verify Signature</button>
+            <div class="med">Message: "{{ msg }}"</div>
+            <div class="med">Valid: {{ valid ? 'valid' : 'not valid' }}</div>
+          </div>
+        </row>
+      </section>
+
+
+      <section>
+        <h1 class="title">Section 3 - Elliptic Curve Implementations</h1>
+      </section>
+
+
+      <section class="curve">
+        <div>ECC Pros</div>
+        <ol>
+          <li class="fragment">Smaller Key Sizes / Efficiencies</li>
+          <li class="fragment">Suggested "Next Gen" Crypto System at BlackHat / by NSA</li>
+        </ol>
+        <div class="fragment">ECC Cons</div>
+        <ol>
+          <li class="fragment">Proprietary Technologies</li>
+          <li class="fragment">Complexity</li>
+          <li class="fragment">Not Proven</li>
+          <li class="fragment">Known Exploits (NSA)</li>
+        </ol>
+      </section>
+
+
+      <section class="curve">
+        <div>Key Size Comparison</div>
+        <table style="margin: auto; width: 25%">
+          <tr>
+            <th>RSA (bits)</th>
+            <th>ECC (bits)</th>
+          </tr>
+          <tr>
+            <td>1024</td>
+            <td>160</td>
+          </tr>
+          <tr>
+            <td>2048</td>
+            <td>224</td>
+          </tr>
+          <tr>
+            <td>3072</td>
+            <td>256</td>
+          </tr>
+          <tr>
+            <td>7680</td>
+            <td>384</td>
+          </tr>
+          <tr>
+            <td>15360</td>
+            <td>521</td>
+          </tr>
+        </table>
+      </section>
+
+
+      <section class="curve">
+        <div>Sony PS3 Hack</div>
+        <div class="fragment">Applications have to be signed before running on Playstation consoles (signed by Sony PS)</div>
+        <div class="fragment">Sony reused a random number to generate the signature</div>
+        <div class="fragment">A well known attack was used to derive private key, this key was published</div>
+        <a target="_blank" href="https://events.ccc.de/congress/2010/Fahrplan/events/4087.en.html">https://events.ccc.de/congress/2010/Fahrplan/events/4087.en.html</a>
+      </section>
+
+
+      <section class="curve">
+        <div>NSA Backdoor - Dual_EC_DRBG</div>
+        <div class="fragment">Algorithm presented as a cryptographically secure PRNG</div>
+        <div class="fragment">NIST SP 800-90A Standard from 2006 - 2014, when it was redacted</div>
+        <div class="fragment">A backdoor was revealed with the Edward Snowden leaks</div>
+      </section>
+
+
+      <section class="curve">
+        <div>Bitcoin</div>
+        <div class="fragment">Bitcoin uses ECC</div>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/bBC-nXj3Ng4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </section>
+
+
+      <section class="curve">
+        <div>Cloudflare - Lava Lamps</div>
+        <div class="fragment">Importance of Random Numbers for ECC</div>
+        <div class="fragment">Wall of Lava Lamps protects about 10% of the Internet's traffic</div>
+        <img class="logo" src="./img/lava-lamps.png">
+      </section>
+
+
+      <section class="curve">
+        <div>Notes from Developer to Developer</div>
+        <ol>
+          <li class="fragment">Choose your curve wisely</li>
+          <li class="fragment">"Randomness" is important!</li>
+          <li class="fragment">Just because government endorses it, doesn't mean you can trust it!</li>
+          <li class="fragment">Just keep learning!</li>
+        </ol>
+      </section>
+
+
+      <section class="curve">
+        <div>Resources</div>
+        <a class="med" target="_blank" href="https://www.johannes-bauer.com/compsci/ecc/">https://www.johannes-bauer.com/compsci/ecc/</a>
+        <a class="med" target="_blank" href="http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/">http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/</a>
+        <a class="med" target="_blank" href="https://www.edn.com/design/consumer/4368066/The-Sony-PlayStation-3-hack-deciphered-what-consumer-electronics-designers-can-learn-from-the-failure-to-protect-a-billion-dollar-product-ecosystem">https://www.edn.com/design/consumer/4368066/The-Sony-PlayStation-3-hack-deciphered-what-consumer-electronics-designers-can-learn-from-the-failure-to-protect-a-billion-dollar-product-ecosystem</a>
+        <a class="med" target="_blank" href="https://en.wikipedia.org/wiki/Dual_EC_DRBG">https://en.wikipedia.org/wiki/Dual_EC_DRBG</a>
+      </section>
+
+
+    </div>
+  </div>
+  <script src="js/bundle.js"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+body {
+  font-family: Verdana, Arial, "Helvetica Neue", Helvetica, sans-serif; }
+
+section {
+  top: 0px;
+  padding: 0px;
+  margin: 0px; }
+
+div.reveal {
+  text-align: left; }
+  div.reveal h1 {
+    text-transform: none;
+    font-size: 1.8em;
+    font-weight: 100;
+    text-align: left; }
+
+div.slides {
+  font-size: .8em; }
+
+div.small {
+  font-size: .3em;
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word; }
+
+div.med {
+  font-size: .6em;
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word; }
+
+img.logo {
+  padding: 15px 0px 0px 15px;
+  max-width: 30%; }
+
+div#parent {
+  position: relative !important; }
+
+div#footer {
+  position: absolute;
+  bottom: 0; }
