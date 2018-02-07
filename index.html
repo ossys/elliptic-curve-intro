@@ -113,6 +113,88 @@
       </section>
 
 
+      <section class="asymmetric">
+        <h2>How is this done?</h2>
+        <div class="fragment">One-Way Trapdoor Function</div>
+        <div class="fragment">Easy to compute in one direction, but tough to reverse, unless you have special information (trap door)</div>
+        <div class="fragment">Modular Exponentiation</div>
+        <div class="fragment">$$ m^e mod(n) = C $$</div>
+        <div class="fragment">Given only C, n and e, how do we find m?</div>
+      </section>
+
+
+      <section class="asymmetric">
+        <h2>Example</h2>
+        <div class="fragment">$$ m^e mod(n) = C $$</div>
+        <div class="fragment">$$ 5^2 mod(7) = C $$</div>
+        <div class="fragment">Tell me C</div>
+        <div class="fragment">4!</div>
+        <div class="fragment">$$ m^3 mod(4) = 0 $$</div>
+        <div class="fragment">Now tell me m</div>
+        <div class="fragment">Give up...?</div>
+        <div class="fragment">it's 4!</div>
+      </section>
+
+
+      <section class="asymmetric">
+        <h2>But where's the trapdoor?</h2>
+        <div class="fragment">$$ m^e mod(n) = C $$</div>
+        <div class="fragment">We need to raise C to some exponent to "undo" what was done and get m, let's call it "d"</div>
+        <div class="fragment">$$ C^d mod(n) = m $$</div>
+        <div class="fragment">m^e^d mod(n) == m == m^ed mod(n)</div>
+        <div class="fragment">e is the encryption key, d is the decryption key</div>
+        <div class="fragment">need to construct e,d where it's difficult to find d</div>
+      </section>
+
+
+      <section class="asymmetric">
+        <h2>Creating the Trapdoor</h2>
+        <div class="fragment">Use a One-Way function to generate d from e</div>
+        <div class="fragment">"Hard" is defined in terms of time complexity (and energy usage)</div>
+        <div class="fragment">Use Prime factorization!</div>
+        <div class="fragment">Find prime factors of 12... go!</div>
+        <div class="fragment">4 x 3</div>
+        <div class="fragment">(2 x 2) x 3</div>
+      </section>
+
+
+      <section class="asymmetric">
+        <h2>Creating the Trapdoor (cont)</h2>
+        <div class="fragment">Find 2 prime numbers and multiply them to create N (easy)</div>
+        <div class="fragment">$$ P1 x P2 = N $$</div>
+        <div class="fragment">$$ 3 x 7 = 21 $$</div>
+        <div class="fragment">Hide N (21)</div>
+        <div class="fragment">Use a function that depends on knowing the factorization of N - Phi</div>
+        <div class="fragment">$ \phi $ (Euler's totient function) measures the "breakability" of a number</div>
+        <div class="fragment">$ \phi(N) $ Gives how many integers less than or equal to N that do not share any common factors with N</div>
+      </section>
+
+
+      <section class="asymmetric">
+        <h2>Creating the Trapdoor (cont)</h2>
+        <div class="fragment">$ \phi(8) $ = 4 [1,3,5,7]</div>
+        <div class="fragment">$ \phi(P) $ = P-1 for any prime number!</div>
+        <div class="fragment">$ \phi $ is also multiplicative</div>
+        <div class="fragment">$ \phi(AB) = \phi(A) \phi(B) $</div>
+        <div class="fragment">Therefore (remember our 2 primes e,d that we multiply and got N)</div>
+        <div class="fragment">$ \phi(N) = (e-1) * (d-1) $</div>
+        <div class="fragment">$ \phi(21) = (3-1) * (7-1) = 2 * 6 = 12 $</div>
+      </section>
+
+
+      <section class="asymmetric">
+        <h2>Creating the Trapdoor (cont)</h2>
+        <div class="fragment">How to connect phi function to modular exponentiation</div>
+        <div class="fragment">Use Euler's theorem - Congruency</div>
+        <div class="fragment">$ m^\phi(n) = 1 mod(n) $</div>
+        <div class="fragment">m = 5, n = 8</div>
+        <div class="fragment">$ 5^\phi(8) = 1 mod(8) $</div>
+        <div class="fragment">$ 1^k = 1  1*k = k $</div>
+        <div class="fragment">m^(k*phi(n) + 1) = m mod(n)</div>
+        <div class="fragment">Therefore it's easy to calculate d, only if the factorization of e is known (private key)</div>
+      </section>
+
+
       <section class="vs">
         <h2>Digital Signing</h2>
         <div class="fragment">Assuming private key is private (core assumption)</div>
