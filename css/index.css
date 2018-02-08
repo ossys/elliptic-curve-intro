@@ -7346,16 +7346,16 @@ div.reveal {
     text-align: left; }
 
 div.slides {
-  font-size: .8em; }
+  font-size: 2.5em; }
 
 div.small {
-  font-size: .3em;
+  font-size: .8em;
   width: 100%;
   white-space: pre-wrap;
   word-wrap: break-word; }
 
 div.med {
-  font-size: .6em;
+  font-size: 1.6em;
   width: 100%;
   white-space: pre-wrap;
   word-wrap: break-word; }
@@ -7378,4 +7378,4 @@ section.pivotal h2 {
 section.keygen pre {
   margin: 0px;
   padding: 0px;
-  font-size: .4em; }
+  font-size: 1em; }
